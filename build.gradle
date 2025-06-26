@@ -1,0 +1,82 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.0' apply false
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+// Top-level repositories for all modules
+repositories {
+	mavenCentral()
+}
+
+group = 'com.cars24'
+version = '0.0.1-SNAPSHOT'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
+
+// Apply Spring Boot BOM to all subprojects for dependency management
+allprojects {
+	apply plugin: 'io.spring.dependency-management'
+	
+	dependencyManagement {
+		imports {
+			mavenBom 'org.springframework.boot:spring-boot-dependencies:3.5.0'
+		}
+	}
+}
+
+// Common configuration for all subprojects
+subprojects {
+	apply plugin: 'java'
+
+	group = 'com.cars24'
+	version = '0.0.1-SNAPSHOT'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+}
+
+// Configure the api module to be the main Spring Boot application
+project(':api') {
+	apply plugin: 'org.springframework.boot'
+	
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation project(':assignment')
+		implementation project(':pipeline')
+		implementation project(':attendance')
+		implementation project(':location')
+		implementation project(':appointment')
+		implementation project(':core')
+		implementation project(':shared-entity')
+	}
+}
+
+// Configure non-application modules to disable bootJar
+configure(subprojects.findAll { it.name != 'api' }) {
+	jar {
+		enabled = true
+		archiveClassifier = '' // This is important for other modules to be used as dependencies
+	}
+}

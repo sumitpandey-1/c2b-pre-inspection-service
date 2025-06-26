@@ -1,0 +1,18 @@
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+		maven { url = 'https://repo.spring.io/milestone' }
+		maven { url = 'https://repo.spring.io/snapshot' }
+	}
+}
+
+rootProject.name = 'c2b-pre-inspection-service'
+
+include 'api'
+include 'assignment'
+include 'pipeline'
+include 'attendance'
+include 'location'
+include 'appointment'
+include 'core'
+include 'shared-entity'

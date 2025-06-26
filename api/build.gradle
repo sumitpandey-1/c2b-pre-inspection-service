@@ -1,0 +1,25 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+springBoot {
+    mainClass = 'com.cars24.c2b_pre_inspection_service.api.C2bPreInspectionServiceApplication'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Add H2 database for in-memory database
+    runtimeOnly 'com.h2database:h2'
+    
+    // Dependencies on other modules
+    implementation project(':assignment')
+    implementation project(':pipeline')
+    implementation project(':attendance')
+    implementation project(':location')
+    implementation project(':appointment')
+    implementation project(':core')
+    implementation project(':shared-entity')
+}
